@@ -53,31 +53,6 @@ resultStrings.each do |k, v|
 	end 
 end
 
-#p resultStrings
-
-#p "find \"#{folderPath}\" -name \"*.html\" -exec grep -c \"#{searchString}\" {} +"
-#value = `find "#{folderPath}" -name "*.html" -exec grep -c "#{searchString}" {} +`
-#resultStrings = value.split("\n")
-
-#return;
-
-=begin
-resultStrings.each do |str|
-
-	values = str.split(":")
-
-	matches = values[0].to_i
-
-	if matches > 0
-		item = {}
-		item[:filePath] = values[0]
-		item[:matches] = matches
-		results << item
-	end 
-end
-=end
-
-
 #sort by matches count
 results = results.sort do |dict1, dict2|
 	numberOfMatchies1 = dict1[:matches]
