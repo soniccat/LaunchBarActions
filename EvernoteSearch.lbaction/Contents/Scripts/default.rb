@@ -43,7 +43,12 @@ startTime = Time.now
 results = []
 
 
-resultStrings = Dir[folderPath+'/'+'*.html'].inject(Hash.new(0)){ |result, item| result.update(item => File.read(item).scan(/#{searchString}/i).size) }
+resultStrings = Dir[folderPath+'/'+'*.html'].inject(Hash.new(0)) do |result, item| 
+	matchCountInName = File.basename(item).scan(/#{searchString}/i).size
+	matchCountInFile = File.read(item).scan(/#{searchString}/i).size 
+	result.update(item => matchCountInFile + matchCountInName) 
+end
+
 resultStrings.each do |k, v|
 	if v > 0
 		item = {}
