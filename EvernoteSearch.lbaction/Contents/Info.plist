@@ -11,7 +11,7 @@
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>LBTextInputTitle</key>
-	<string>Options after --:rtm</string>
+	<string>Your query</string>
 	<key>LBDebugLogEnabled</key>
 	<true/>
 	<key>LBScripts</key>
