@@ -1,0 +1,18 @@
+indexFileDaemon.rb: process with pid 10221 started.
+indexFileDaemon.rb: process with pid 10249 started.
+/Users/alexeyglushkov/LaunchBarScripts/EvernoteIndex.lbaction/Contents/Scripts/indexFileDaemon.rb:8: warning: already initialized constant URI
+/Users/alexeyglushkov/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri.rb:96: warning: previous definition of URI was here
+indexFileDaemon.rb: process with pid 10261 started.
+/Users/alexeyglushkov/LaunchBarScripts/EvernoteIndex.lbaction/Contents/Scripts/indexFileDaemon.rb:8: warning: already initialized constant URI
+/Users/alexeyglushkov/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri.rb:96: warning: previous definition of URI was here
+indexFileDaemon.rb: process with pid 10321 started.
+indexFileDaemon.rb: process with pid 10352 started.
+indexFileDaemon.rb: process with pid 10495 started.
+/Users/alexeyglushkov/LaunchBarScripts/EvernoteIndex.lbaction/Contents/Scripts/indexFileDaemon.rb:8: warning: already initialized constant URI
+/Users/alexeyglushkov/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri.rb:96: warning: previous definition of URI was here
+indexFileDaemon.rb: process with pid 10510 started.
+/Users/alexeyglushkov/LaunchBarScripts/EvernoteIndex.lbaction/Contents/Scripts/indexFileDaemon.rb:8: warning: already initialized constant URI
+/Users/alexeyglushkov/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri.rb:96: warning: previous definition of URI was here
+indexFileDaemon.rb: process with pid 10536 started.
+/Users/alexeyglushkov/LaunchBarScripts/EvernoteIndex.lbaction/Contents/Scripts/indexFileDaemon.rb:8: warning: already initialized constant URI
+/Users/alexeyglushkov/.rvm/rubies/ruby-2.1.1/lib/ruby/2.1.0/uri.rb:96: warning: previous definition of URI was here

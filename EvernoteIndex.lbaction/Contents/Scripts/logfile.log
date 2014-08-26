@@ -1,0 +1,31 @@
+I, [2014-08-25T23:19:17.873180 #10221]  INFO -- initialize: Initializing
+I, [2014-08-25T23:21:45.649738 #10249]  INFO -- initialize: Initializing
+I, [2014-08-25T23:22:18.927882 #10261]  INFO -- initialize: Initializing
+I, [2014-08-25T23:27:23.922615 #10321]  INFO -- initialize: Initializing
+I, [2014-08-25T23:30:44.362728 #10352]  INFO -- initialize: Initializing
+I, [2014-08-25T23:34:25.813757 #10495]  INFO -- initialize: Initializing
+I, [2014-08-25T23:35:40.844187 #10510]  INFO -- initialize: Initializing
+I, [2014-08-25T23:35:52.320480 #10510]  INFO -- search: search started core
+I, [2014-08-25T23:35:52.987682 #10510]  INFO -- search: search finished core
+I, [2014-08-25T23:37:20.476444 #10536]  INFO -- initialize: Initializing
+I, [2014-08-25T23:38:18.768524 #10536]  INFO -- search: search started bash as
+I, [2014-08-25T23:38:19.500596 #10536]  INFO -- search: search finished bash as
+I, [2014-08-25T23:38:30.443882 #10536]  INFO -- search: search started sd
+I, [2014-08-25T23:38:31.006645 #10536]  INFO -- search: search finished sd
+I, [2014-08-25T23:38:31.352404 #10536]  INFO -- search: search started sdk
+I, [2014-08-25T23:38:31.356057 #10536]  INFO -- search: search started sdk
+I, [2014-08-25T23:38:31.357955 #10536]  INFO -- search: search started sdk-
+I, [2014-08-25T23:38:32.124916 #10536]  INFO -- search: search finished sdk
+I, [2014-08-25T23:38:33.117139 #10536]  INFO -- search: search finished sdk
+I, [2014-08-25T23:38:33.261401 #10536]  INFO -- search: search finished sdk-
+I, [2014-08-25T23:38:38.632626 #10536]  INFO -- search: search started sdk
+I, [2014-08-25T23:38:39.268697 #10536]  INFO -- search: search finished sdk
+I, [2014-08-25T23:38:39.725977 #10536]  INFO -- search: search started uni
+I, [2014-08-25T23:38:40.279083 #10536]  INFO -- search: search finished uni
+I, [2014-08-25T23:38:40.280812 #10536]  INFO -- search: search started unit
+I, [2014-08-25T23:38:40.295443 #10536]  INFO -- search: search started unity
+I, [2014-08-25T23:38:41.449490 #10536]  INFO -- search: search finished unit
+I, [2014-08-25T23:38:41.708478 #10536]  INFO -- search: search finished unity
+I, [2014-08-25T23:38:41.716253 #10536]  INFO -- search: search started unity
+I, [2014-08-25T23:38:42.446118 #10536]  INFO -- search: search finished unity
+I, [2014-08-25T23:48:36.994578 #10660]  INFO -- initialize: Initializing

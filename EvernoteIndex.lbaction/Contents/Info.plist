@@ -3,17 +3,15 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleIdentifier</key>
-	<string>com.alexeyglushkov.LaunchBar.action.EvernoteSearch</string>
+	<string>com.alexeyglushkov.LaunchBar.action.EvernoteIndex</string>
 	<key>CFBundleIconFile</key>
 	<string></string>
 	<key>CFBundleName</key>
-	<string>Evernote Search</string>
+	<string>Evernote Index</string>
 	<key>CFBundleVersion</key>
-	<string>1.1</string>
-	<key>LBTextInputTitle</key>
-	<string>Options after --:d</string>
+	<string>1.0</string>
 	<key>LBDebugLogEnabled</key>
-	<false/>
+	<true/>
 	<key>LBScripts</key>
 	<dict>
 		<key>LBDefaultScript</key>
@@ -23,15 +21,11 @@
 			<key>LBRunInBackground</key>
 			<true/>
 			<key>LBRequiresArgument</key>
-			<true/>
-			<key>LBAcceptedArgumentTypes</key>
-			<array>
-				<string>string</string>
-			</array>
+			<false/>
 			<key>LBReturnsResult</key>
-			<true/>
+			<false/>
 			<key>LBLiveFeedbackEnabled</key>
-			<true/>
+			<false/>
 		</dict>
 	</dict>
 	<key>LBDescription</key>

@@ -2,91 +2,104 @@
 
 require 'json'
 require 'CGI'
+require 'drb/drb'
+require 'daemons'
+require_relative 'evernotePath'
 
-#get search folder
-homeFolder = `echo ~/`
-homeFolder = homeFolder[0..-2]
+# The URI to connect to
+SERVER_URI="druby://localhost:8787"
 
-exportPath = ""
+def handleInputString(searchString)
+	#handle options
+	optionIndex = searchString.index('--')
+	optionsString = ""
 
-containersPath = "#{homeFolder}/Library/Group Containers/"
-files = Dir.entries(containersPath)
-files.each do |f|
-	if f.end_with?("com.evernote.Evernote")
-		exportPath = containersPath + f + "/Evernote/evernoteExport"
+	if optionIndex != nil
+		optionsString = searchString[optionIndex+2..-1]
+		searchString = searchString[0..optionIndex-1]
 	end
+
+	$showDebug = optionsString.index('d') != nil
+	return searchString
 end
 
-if exportPath == nil || exportPath.length == 0
-	item = {}
-	item['title'] = "Can't build path to a search folder"
-	items.push(item)
-	return item
-end
-
-folderPath = exportPath
-searchString = ARGV[0]
-
-optionIndex = searchString.index('--')
-optionsString = ""
-
-if optionIndex != nil
-	optionsString = searchString[optionIndex+2..-1]
-	searchString = searchString[0..optionIndex-1]
-end
-
-$showDebug = optionsString.index('d') != nil
-
-
-#seach
-startTime = Time.now
-results = []
-
-
-resultStrings = Dir[folderPath+'/'+'*.html'].inject(Hash.new(0)) do |result, item| 
-	matchCountInName = File.basename(item).scan(/#{searchString}/i).size
-	matchCountInFile = File.read(item).scan(/#{searchString}/i).size 
-	result.update(item => matchCountInFile + matchCountInName) 
-end
-
-resultStrings.each do |k, v|
-	if v > 0
+def buildItemsFromArray(array)
+	items = []
+	array.each do | dict |
 		item = {}
-		item[:filePath] = k
-		item[:matches] = v
-		results << item
-	end 
+		item['title'] = File.basename(dict[:filePath])
+		item['subtitle'] = dict[:matches].to_s + " matches"
+		item['path'] = dict[:filePath] 
+
+		items << item
+	end
+
+	return items
 end
 
-#sort by matches count
-results = results.sort do |dict1, dict2|
-	numberOfMatchies1 = dict1[:matches]
-	numberOfMatchies2 = dict2[:matches]
+def search(searchString)
 
-	numberOfMatchies2 - numberOfMatchies1
+	results = nil
+	if (searchString.length <= 1)
+		return []
+	end
+
+	begin
+		results = searchOnServer(searchString)
+
+	rescue
+		#maybe server wasn't launched
+		options = {
+			#:backtrace => true,
+			#:dir_mode => :script,
+			#:log_output => true,
+			:ARGV       => ['start','--', Dir.pwd]
+		}
+
+		p "Launching daemon, please wait a few seconds and type again"
+		Daemons.run('indexFileDaemon.rb', options)
+
+		begin
+			results = searchOnServer(searchString)
+		rescue
+		end
+	end
+
+	return results;
+end
+
+def searchOnServer(searchString)
+	DRb.start_service
+
+	server = DRbObject.new_with_uri(SERVER_URI)
+	results = server.search(searchString, Time.now.to_i)
+	return results
+end
+
+searchString = ARGV[0]
+searchString = handleInputString(searchString)
+
+startTime = Time.now
+items = []
+
+results = search(searchString)
+
+if results == nil
+	item = {}
+	item['title'] = "Can't connect to the process"
+	items.push(item)
 end
 
 finishTime = Time.now
 timeIntervale = finishTime - startTime
 
-#convert to response
-items = []
-
-if ($showDebug)
+if ($showDebug && results != nil)
 	item = {}
-	item['title'] = "scanning takes #{timeIntervale} seconds"
+	item['title'] = "scanning takes #{timeIntervale} seconds #{results.count} results"
 	items.push(item)
 end
 
-results.each do | dict |
-
-	item = {}
-	item['title'] = File.basename(dict[:filePath])
-	item['subtitle'] = dict[:matches].to_s + " matches"
-	item['path'] = dict[:filePath] 
-
-	items.push(item)
-end
+items += buildItemsFromArray(results) if results != nil
 
 if items.count == 0
 	item = {}
@@ -95,6 +108,3 @@ if items.count == 0
 end
 
 puts items.to_json
-
-
-
