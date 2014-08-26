@@ -1,6 +1,8 @@
 LaunchBarActions
 ================
 
+## Search through Evernote's notes
+
 **Evernote Export** - an action to export all your notes from Evernote in folder /Users/userName/Library/Group Containers/Number.com.evernote.Evernote/Evernote/evernoteExport
 
 **Evernote Index** - an action to manually run indexing to all your exported notes
@@ -34,4 +36,9 @@ For interprocess communications I use DRb.
 
 ![alt tag](https://raw.githubusercontent.com/soniccat/LaunchBarActions/master/img/EvernoteExport.png)
 
-Irregular Verbs - an action to show irregular verbs when you type
+### To Do
+1. Run exporting and indexing automatically every week
+
+## Looking for English Irregular Verbs
+
+**Irregular Verbs** - an action to show irregular verbs after you type
