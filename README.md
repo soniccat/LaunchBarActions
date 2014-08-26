@@ -38,6 +38,7 @@ For interprocess communications I use DRb.
 
 ### To Do
 1. Run exporting and indexing automatically every week
+2. Remove index.html from search results
 
 ## Looking for English Irregular Verbs
 
