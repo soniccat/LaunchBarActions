@@ -15,7 +15,7 @@ To search through the exported notes you should run **Evernote Search**.
 ### Indexing
 **Evernote Export** and **Evernote Index** commands create an index file from all your notes. **Evernote Search** command uses it to search faster. The index file is stored in the storedindex file in the evernoteExport folder.
 
-LaunchBar runs search script every time when you type. To not to load the index file every time all above commands create the ruby daemon which works like a small server. It listens druby://localhost:8787. Whole index file is keeping in memory. If the daemon is already launched then a command will skip this step. Also the daemon stops old requests if you type new one. 
+LaunchBar runs search script every time when you type. To not to load the index file every time all above commands create the ruby daemon which works like a small server. It listens druby://localhost:8787. Whole index file is kept in memory. If the daemon is already launched then a command will skip this step. Also the daemon stops old requests if you type new one. 
 
 ### Dependencies
 To launch the daemon I use daemons library. It means that you should install it for the system ruby version. If you use rvm  you should remember which ruby you use now with ```rvm list``` and then type in a console:
