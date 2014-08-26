@@ -29,6 +29,8 @@ then rollback to the previous ruby version. If you don't use rvm you sholdn't do
 
 Also **Evernote Export** and **Evernote Index** use unicode_utils but it seems that system ruby already has it.
 
+For interprocess communications I use DRb.
+
 
 ![alt tag](https://raw.githubusercontent.com/soniccat/LaunchBarActions/master/img/EvernoteExport.png)
 
