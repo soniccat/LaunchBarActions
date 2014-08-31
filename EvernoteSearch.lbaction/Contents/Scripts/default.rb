@@ -50,9 +50,9 @@ def search(searchString)
 	rescue
 		#maybe server wasn't launched
 		options = {
-			#:backtrace => true,
+			:backtrace => true,
 			#:dir_mode => :script,
-			#:log_output => true,
+			:log_output => true,
 			:dir_mode => :normal,
 			:dir => "./../../../",
 			:ARGV       => ['restart','--', Dir.pwd]

@@ -25,9 +25,11 @@ To launch the daemon I use daemons library. It means that you should install it 
 ```
 rvm system
 sudo gem install daemons
+sudo gem install unicode_utils
+sudo gem install ruby-stemmer
 ```
 
-then rollback to the previous ruby version. If you don't use rvm you sholdn't do anything. 
+If you don't use rvm you sholdn't do anything. 
 
 Also **Evernote Export** and **Evernote Index** use unicode_utils but it seems that system ruby already has it.
 

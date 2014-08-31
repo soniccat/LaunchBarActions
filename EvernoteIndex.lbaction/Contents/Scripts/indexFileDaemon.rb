@@ -1,6 +1,8 @@
 require 'drb/drb'
 require 'logger'
 require 'time'
+require 'unicode_utils'
+require 'lingua/stemmer'
 require_relative 'evernotePath'
 
 class IndexFileDaemon
@@ -53,6 +55,10 @@ class IndexFileDaemon
 		return results
 	end
 
+	def dataForWord(word)
+		return @indexHash[word]
+	end
+
  #private
 
 	def loadIndexHash(folderPath)
@@ -68,6 +74,17 @@ class IndexFileDaemon
 
 	def hashSearch(searchString, indexHash, currentRequestDate)
 		searchWords = searchString.scan(/\p{Word}+/)
+
+		ruStemmer = Lingua::Stemmer.new(:language => "ru")
+		enStemmer = Lingua::Stemmer.new(:language => "en")
+
+		searchWords = searchWords.map do |s| 
+			nstr = UnicodeUtils.downcase(s)
+			nstr = ruStemmer.stem(nstr)
+			nstr = enStemmer.stem(nstr)
+		end
+
+		searchWords.delete_if {|v| IndexFileDaemon.needFilterWord(v) }  
 
 		#get indexes for typed words
 		resultFileHash = {}
