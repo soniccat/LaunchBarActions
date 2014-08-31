@@ -38,9 +38,9 @@ For interprocess communications I use DRb.
 
 ### To Do
 1. Run exporting and indexing automatically every week
-2. Remove index.html from search results
-3. Optimize the index file, add filtering for more frequent words like articles
-4. Unload index from memory after a hour
+2. Unload index from memory after a hour
+3. Fix mistakes in search result
+4. Fix a "can't connect to process" mistake
 
 ## Looking for English Irregular Verbs
 
