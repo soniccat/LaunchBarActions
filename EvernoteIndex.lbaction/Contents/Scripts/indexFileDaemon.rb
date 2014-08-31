@@ -1,25 +1,32 @@
-
 require 'drb/drb'
 require 'logger'
 require 'time'
 require_relative 'evernotePath'
 
-# The URI for the server to connect to
-URI="druby://localhost:8787"
-
 class IndexFileDaemon
 
 	attr_accessor :indexHash, :lg, :lastRequestDate
 
-	def initialize
-		folderPath = evernotePath
-		@indexHash = loadIndexHash(folderPath)
+	def self.needFilterWord(s)
+		stopWords = ["are","from","with","you","this","and","for","the"]
+		return s.length <= 2 || stopWords.include?(s)
+	end
 
+	def initialize
 		file = File.open(ARGV[0] + '/' + 'logfile.log', File::WRONLY | File::APPEND | File::CREAT)
 		@lg = Logger.new(file)
 
 		@lastRequestDate = Time.now.to_i
 		@lg.info('initialize') { "Initializing" }
+
+		Thread.new do
+			loadIndexFile
+		end
+	end
+
+	def loadIndexFile
+		folderPath = evernotePath
+		@indexHash = loadIndexHash(folderPath)
 	end
 
 	def search(searchString, requestDate)
@@ -161,13 +168,4 @@ class IndexFileDaemon
 	end
 
 end
-
-# The object that handles requests on the server
-FRONT_OBJECT=IndexFileDaemon.new
-
-$SAFE = 1   # disable eval() and friends
-
-DRb.start_service(URI, FRONT_OBJECT)
-# Wait for the drb server thread to finish before exiting.
-DRb.thread.join
 

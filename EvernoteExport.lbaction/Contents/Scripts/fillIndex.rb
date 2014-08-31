@@ -6,6 +6,8 @@ require 'open-uri'
 require 'daemons'
 require 'daemons'
 require 'unicode_utils'
+require 'lingua/stemmer'
+require_relative 'indexFileDaemon'
 require_relative 'evernotePath'
 
 def restartServer
@@ -14,10 +16,21 @@ def restartServer
 		#:backtrace => true,
 		#:dir_mode => :script,
 		#:log_output => true,
+		:dir_mode => :normal,
+		:dir => "./../../../",
 		:ARGV       => ['restart','--', Dir.pwd]
 	}
 
-	Daemons.run('indexFileDaemon.rb', options)
+	Daemons.run('indexFileDaemonStart.rb', options)
+end
+
+def wordCoundForFilesDict(filesDict)
+	count = 0
+	filesDict.each_value do |v|
+		count += v.count
+	end
+
+	return count
 end
 
 def createIndex
@@ -30,8 +43,25 @@ def createIndex
 
 	files = Dir['./'+'*.html']
 	files.each do |f|
-		fillIndexFromFile(File.basename(f),indexStorage)
+		fileName = File.basename(f)
+		fillIndexFromFile(File.basename(f),indexStorage) if fileName != "index.html"
 	end
+
+	#filtering
+	indexStorage.delete_if {|key, value| IndexFileDaemon.needFilterWord(key) }  
+
+=begin
+	testStorage = {}
+	indexStorage.each_pair do |k,v|
+		testStorage[k] = v.count #wordCoundForFilesDict(v)
+	end
+
+	testStorage = testStorage.sort_by {|k,v| v}
+
+	testStorage.each do |v|
+		puts "#{v[0]}: #{v[1]}"
+	end
+=end
 
 	File.open("storedindex", "wb") {|f| Marshal.dump(indexStorage, f)}
 
@@ -46,8 +76,18 @@ def fillIndexFromFile(fileName, indexStorage)
 	text  = doc.at('body').inner_text
 
 	words = fileName.scan(/\p{Word}+/)
+	words.delete("html")
+
 	words += text.scan(/\p{Word}+/)
-	words = words.map {|s| UnicodeUtils.downcase(s)}
+
+	ruStemmer = Lingua::Stemmer.new(:language => "ru")
+	enStemmer = Lingua::Stemmer.new(:language => "en")
+
+	words = words.map do |s| 
+		nstr = UnicodeUtils.downcase(s)
+		nstr = ruStemmer.stem(nstr)
+		nstr = enStemmer.stem(nstr)
+	end
 
 	wordsWithIndexes = words.zip(1..words.count)
 

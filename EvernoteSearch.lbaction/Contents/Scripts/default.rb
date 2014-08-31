@@ -53,11 +53,13 @@ def search(searchString)
 			#:backtrace => true,
 			#:dir_mode => :script,
 			#:log_output => true,
-			:ARGV       => ['start','--', Dir.pwd]
+			:dir_mode => :normal,
+			:dir => "./../../../",
+			:ARGV       => ['restart','--', Dir.pwd]
 		}
 
 		p "Launching daemon, please wait a few seconds and type again"
-		Daemons.run('indexFileDaemon.rb', options)
+		Daemons.run('indexFileDaemonStart.rb', options)
 
 		begin
 			results = searchOnServer(searchString)
