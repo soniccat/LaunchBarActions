@@ -3,16 +3,17 @@ require 'logger'
 require 'time'
 require 'unicode_utils'
 require 'lingua/stemmer'
-require 'ruby-prof'
+#require 'ruby-prof'
 require_relative 'evernotePath'
 
 class IndexFileDaemon
 
-	attr_accessor :indexHash, :lg, :lastRequestDate, :path, :profile
+	attr_accessor :indexHash, :lg, :lastRequestDate, :path#, :profile
 
 	def self.needFilterWord(s)
 		#TODO: make it loadable from a file
-		stopWords = ["are","from","with","you","this","and","for","the","to","in","on"]
+		stopWords = ["are","from","with","you","this","and","for","the","to","in","on", "do", "so", "get", "will", "but", "of", "is", "it", "that", "if", "by", "an", "be", "or", "not", "at", "your", "when", "use", "can"]
+
 		return s.length == 1 || stopWords.include?(s)
 	end
 
@@ -24,7 +25,7 @@ class IndexFileDaemon
 		@lastRequestDate = Time.now.to_i
 		@lg.info('initialize') { "Initializing" }
 
-		@profile = File.open(@path + '/' + 'profile.log', File::WRONLY | File::CREAT)
+		#@profile = File.open(@path + '/' + 'profile.log', File::WRONLY | File::CREAT)
 
 		Thread.new do
 			loadIndexFile
@@ -37,7 +38,12 @@ class IndexFileDaemon
 	end
 
 	def search(searchString, requestDate)
+		#RubyProf.measure_mode = RubyProf::MEMORY
 		#RubyProf.start
+
+		if @indexHash == nil
+			loadIndexFile
+		end
 
 		if requestDate.to_i < @lastRequestDate
 			@lg.info('search') { "request is old #{searchString}" }
@@ -60,10 +66,15 @@ class IndexFileDaemon
 		end
 
 		#result = RubyProf.stop
-		#printer = RubyProf::CallStackPrinter.new(result)
+		#printer = RubyProf::FlatPrinter.new(result)
 		#printer.print(@profile)
 
 		return results
+	end
+
+	def unloadIndex
+		@indexHash = nil
+		GC.start
 	end
 
 	def dataForWord(word)
@@ -73,12 +84,22 @@ class IndexFileDaemon
  #private
 
 	def loadIndexHash(folderPath)
+		@lg.info('loadIndexHash') { "loadIndexHash started" }
+
 		indexHash = nil
 		indexPath = folderPath + "/storedindex"
 
+		@lg.info('loadIndexHash') { "indexPath #{indexPath}" }
+
 		if File.exist?(indexPath)
+			@lg.info('loadIndexHash') { "file existed" }
+
 			indexHash = File.open(indexPath, "rb") {|f| Marshal.load(f)}
+
+			@lg.info('loadIndexHash') { "file loaded" }
 		end
+
+		@lg.info('loadIndexHash') { "loadIndexHash finished" }
 
 		return indexHash
 	end

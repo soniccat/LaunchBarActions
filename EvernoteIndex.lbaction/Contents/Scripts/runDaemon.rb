@@ -7,4 +7,4 @@ options = {
 			:ARGV       => [ARGV[0],'--', Dir.pwd]
 		}
 
-Daemons.run('indexFileDaemon.rb', options)
+Daemons.run('indexFileDaemonStart.rb', options)

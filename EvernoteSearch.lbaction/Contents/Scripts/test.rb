@@ -9,5 +9,6 @@ SERVER_URI="druby://localhost:8787"
 DRb.start_service
 
 server = DRbObject.new_with_uri(SERVER_URI)
-results = server.dataForWord(ARGV[0])
-p results
+#results = server.dataForWord(ARGV[0])
+server.unloadIndex
+#p results
