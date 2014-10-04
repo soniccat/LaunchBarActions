@@ -23,13 +23,11 @@ LaunchBar runs search script every time when you type. To not to load the index 
 To launch the daemon I use daemons library. It means that you should install it for the system ruby version. If you use rvm  you should remember which ruby you use now with ```rvm list``` and then type in a console:
 
 ```
-rvm system
-sudo gem install daemons
-sudo gem install unicode_utils
-sudo gem install ruby-stemmer
+rvm --default use ruby_version_you_want_to_use 
+sudo gem install nokogiri && gem install daemons && gem install unicode_utils && gem install ruby-stemmer
 ```
 
-If you don't use rvm you sholdn't do anything. 
+If you don't use rvm just skip the first line. 
 
 Also **Evernote Export** and **Evernote Index** use unicode_utils but it seems that system ruby already has it.
 
