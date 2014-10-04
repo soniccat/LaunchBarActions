@@ -24,7 +24,7 @@ To launch the daemon I use daemons library. It means that you should install it 
 
 ```
 rvm --default use ruby_version_you_want_to_use 
-sudo gem install nokogiri && gem install daemons && gem install unicode_utils && gem install ruby-stemmer
+gem install nokogiri && gem install daemons && gem install unicode_utils && gem install ruby-stemmer
 ```
 
 If you don't use rvm just skip the first line. 
