@@ -27,7 +27,7 @@ rvm --default use ruby_version_you_want_to_use
 gem install nokogiri && gem install daemons && gem install unicode_utils && gem install ruby-stemmer
 ```
 
-If you don't use rvm just skip the first line. 
+If you don't use rvm just skip the first line and add "sudo" before gem install.
 
 Also **Evernote Export** and **Evernote Index** use unicode_utils but it seems that system ruby already has it.
 
