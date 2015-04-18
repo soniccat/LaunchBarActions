@@ -3,7 +3,7 @@ LaunchBarActions
 
 ## Search through Evernote's notes
 
-**Evernote Searsh With Apple Script** - it looks through your notes using launched Evernote.app. Results are showed below the LaunchBar input as expected. The LaunchBar input works a little laggy because I decided it's better than listening how my computer uses its hardrive very actively. Every searching process happens on the main thread. The script works independently with scripts below, it's just an alternative solution.
+**Evernote Search With Apple Script** - it looks through your notes using launched Evernote.app. Results are showed below the LaunchBar input as expected. The LaunchBar input works a little laggy because I decided it's better than listening how my computer uses its hardrive very actively. Every searching process happens on the main thread. The script works independently with scripts below, it's just an alternative solution.
 
 **Evernote Export** - an action to export all your notes from Evernote in folder /Users/userName/Library/Group Containers/Number.com.evernote.Evernote/Evernote/evernoteExport
 
