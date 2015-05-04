@@ -3,6 +3,8 @@ LaunchBarActions
 
 ## Search through Evernote's notes
 
+**Evernote Search With Apple Script** - it looks through your notes using launched Evernote.app. Results are showed below the LaunchBar input as expected. The LaunchBar input works a little laggy because I decided it's better than listening how my computer uses its hardrive very actively. Every searching process happens on the main thread. The script works independently with scripts below, it's just an alternative solution.
+
 **Evernote Export** - an action to export all your notes from Evernote in folder /Users/userName/Library/Group Containers/Number.com.evernote.Evernote/Evernote/evernoteExport
 
 **Evernote Index** - an action to manually run indexing to all your exported notes
@@ -20,16 +22,11 @@ To search through the exported notes you should run **Evernote Search**.
 LaunchBar runs search script every time when you type. To not to load the index file every time all above commands create the ruby daemon which works like a small server. It listens druby://localhost:8787. Whole index file is kept in memory. If the daemon is already launched then a command will skip this step. Also the daemon stops old requests if you type new one. 
 
 ### Dependencies
-To launch the daemon I use daemons library. It means that you should install it for the system ruby version. If you use rvm  you should remember which ruby you use now with ```rvm list``` and then type in a console:
+The script uses a few libraries you have to install. Just type in a console:
 
 ```
-rvm --default use ruby_version_you_want_to_use 
-gem install nokogiri && gem install daemons && gem install unicode_utils && gem install ruby-stemmer
+sudo gem install nokogiri && gem install daemons && gem install unicode_utils && gem install ruby-stemmer
 ```
-
-If you don't use rvm just skip the first line and add "sudo" before gem install.
-
-Also **Evernote Export** and **Evernote Index** use unicode_utils but it seems that system ruby already has it.
 
 For interprocess communications I use DRb.
 
