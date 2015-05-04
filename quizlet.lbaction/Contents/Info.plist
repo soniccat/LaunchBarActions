@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleIdentifier</key>
+	<string>com.alexeyglushkov.LaunchBar.action.quizlet</string>
+	<key>CFBundleIconFile</key>
+	<string>quizlet.png</string>
+	<key>CFBundleName</key>
+	<string>Quizlet</string>
+	<key>CFBundleVersion</key>
+	<string>1.0</string>
+	<key>LBDebugLogEnabled</key>
+	<true/>
+	<key>LBTextInputTitle</key>
+	<string>Word:</string>
+	<key>LBScripts</key>
+	<dict>
+		<key>LBDefaultScript</key>
+		<dict>
+			<key>LBLiveFeedbackEnabled</key>
+			<true/>
+			<key>LBReturnsResult</key>
+			<true/>
+			<key>LBKeepWindowActive</key>
+			<false/>
+			<key>LBBackgroundKillEnabled</key>
+			<false/>
+			<key>LBScriptName</key>
+			<string>default.rb</string>
+			<key>LBRunInBackground</key>
+			<false/>
+			<key>LBRequiresArgument</key>
+			<false/>
+			<key>LBAcceptedArgumentTypes</key>
+			<array>
+				<string>string</string>
+			</array>
+		</dict>
+	</dict>
+	<key>LBDescription</key>
+	<dict>
+		<key>LBSummary</key>
+		<string>Client for quizlet</string>
+		<key>LBAuthor</key>
+		<string>Glushkov Alexey</string>
+		<key>LBWebsite</key>
+		<string>http://www.linkedin.com/profile/view?id=136049549</string>
+		<key>LBTwitter</key>
+		<string>@soniccat</string>
+	</dict>
+	<key>NSHumanReadableCopyright</key>
+	<string>Copyright © 2014 Gluhkov Alexey</string>
+</dict>
+</plist>
