@@ -61,6 +61,10 @@ def getAllWords(quizletApi, filter = nil, needAddItem = false, word = nil)
     actions += [getChangeItem(word)]
   end
   
+  if quizletApi.hasLastCard?
+    actions += [getLastCardItem(quizletApi.lastCard, word)]
+  end
+  
   sets.each do |s|
     words += quizletTermsToItems(s['terms'], s['id'], filter, word)
   end
@@ -157,10 +161,7 @@ def deleteTerm(quizletApi, setId, id)
 end
 
 def deleteSet(quizletApi, setId)
-  if (quizletApi.currentSet != nil && quizletApi.currentSet['id'] == setId) 
-    dict = quizletApi.deleteSet(setId)
-    quizletApi.setCurrentSet(nil)
-  end
+  dict = quizletApi.deleteSet(setId)
   return [getResultItem('Deleted!')]
 end
 
@@ -325,6 +326,15 @@ def getDeleteSetItem(setId, setTitle)
   child['icon'] = 'delete.png'
   
   item['children'] = [child]
+  return item
+end
+
+def getLastCardItem(card, word)
+  #TODO: we should parse data to our objects and work only with them
+  jsonItem = {'id' => card.cardId, 'term' => card.term, 'definition' => card.definition}
+  item = quizletTermsToItems([jsonItem], card.setId, nil, word)[0]
+  item['title'] = 'Last word: ' + card.term
+  
   return item
 end
 

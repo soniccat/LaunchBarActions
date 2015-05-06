@@ -201,7 +201,7 @@ class CommandPerformer
     result = cmd.run
     
     if logging
-      File.open("../../../outputQuizlet", "wt") {|f| f.write(result)}
+      File.open("../../../outputQuizlet", "a") {|f| f.write(result)}
     end
     
     result = JSON.parse(result) if result != nil && result.length > 2
@@ -230,14 +230,44 @@ class CommandPerformer
   end
 end
 
+class Card
+  attr_accessor :setId, :cardId, :term, :definition
+
+  def initialize(setId, cardId, term, definition)
+    @setId = setId
+    @cardId = cardId
+    @term = term
+    @definition = definition
+  end
+  
+    def to_json(options = {})
+      JSON.dump({
+        'setId' => setId,
+        'cardId' => cardId,
+        'term' => term, 
+        'definition' => definition
+      })
+    end
+    
+    def self.from_json string
+        data = JSON.load string
+        return Card.new(data['setId'],
+          data['cardId'],
+          data['term'],
+          data['definition'])
+    end
+end
+
 class QuizletApi
-  attr_accessor :performer, :currentSet, :storeName
+  attr_accessor :performer, :currentSet, :lastCard, :currentSetStoreName, :lastCardStoreName
   
   def initialize(performer)
-    @storeName = "../../../quizletCurrentSet"
+    @currentSetStoreName = "../../../quizletCurrentSet"
+    @lastCardStoreName = "../../../quizletCurrentWord"
     
     @performer = performer
     @currentSet = loadCurrentSet()
+    @lastCard = loadLastCard()
   end
   
   def authorized?
@@ -268,8 +298,14 @@ class QuizletApi
   end
   
   def addWord(word, definition)
-    cmd = QuizletCommand.new("https://api.quizlet.com/2.0/sets/" + currentSet['id'].to_s + "/terms?term=" + word + "&definition="+definition, "POST")
+    setId = currentSet['id']
+    cmd = QuizletCommand.new("https://api.quizlet.com/2.0/sets/" + setId.to_s + "/terms?term=" + word + "&definition="+definition, "POST")
     result = performer.run(cmd)
+    
+    cardId = result['id']
+    createLastCard(setId, cardId, word, definition)
+    storeLastCard()
+    
     return result
   end
   
@@ -291,12 +327,24 @@ class QuizletApi
   def editTerm(setId, termId, newTerm)
     cmd = QuizletCommand.new('https://api.quizlet.com/2.0/sets/' + setId.to_s + "/terms/" + termId.to_s + "?term=" + newTerm, 'PUT')
     result = performer.run(cmd)
+    
+    if hasLastCard? && lastCard.cardId == termId
+      lastCard.term = newTerm
+      storeLastCard()
+    end
+    
     return result
   end
   
-  def editDefinition(setId, termId, newTerm)
-    cmd = QuizletCommand.new('https://api.quizlet.com/2.0/sets/' + setId.to_s + "/terms/" + termId.to_s + "?definition=" + newTerm, 'PUT')
+  def editDefinition(setId, termId, newDefinition)
+    cmd = QuizletCommand.new('https://api.quizlet.com/2.0/sets/' + setId.to_s + "/terms/" + termId.to_s + "?definition=" + newDefinition, 'PUT')
     result = performer.run(cmd)
+    
+    if hasLastCard? && lastCard.cardId == termId
+      lastCard.definition = newDefinition
+      storeLastCard()
+    end
+    
     return result
   end
   
@@ -305,42 +353,81 @@ class QuizletApi
     result = performer.run(cmd)
     return result
   end
-  
+
   def deleteTerm(setId, termId)
     cmd = QuizletCommand.new('https://api.quizlet.com/2.0/sets/' + setId.to_s + "/terms/" + termId.to_s, 'DELETE')
     result = performer.run(cmd)
+    
+    if (hasLastCard? && lastCard.cardId == termId) 
+      deleteLastCard()
+    end
+    
     return result
   end
   
   def deleteSet(setId)
     cmd = QuizletCommand.new('https://api.quizlet.com/2.0/sets/' + setId.to_s, 'DELETE')
     result = performer.run(cmd)
+    
+    if (currentSet != nil && currentSet['id'] == setId) 
+      deleteCurrentSet()
+    end
+    
     return result
   end
   
+  #TODO: add separate arguments for id and title and write getters only for them
   def setCurrentSet(set)
     @currentSet = set
     storeCurrentSet()
   end
   
   def storeCurrentSet
-    if currentSet != nil
-      File.open(storeName, "wt") do |f|
-        f.write currentSet.to_json
-      end
-    else
-      if File.exist? storeName
-        File.delete(storeName)
-      end
+    File.open(currentSetStoreName, "wt") do |f|
+      f.write currentSet.to_json
     end
   end
   
+  def deleteCurrentSet
+    if File.exist? currentSetStoreName
+        File.delete(currentSetStoreName)
+      end
+  end
+
   def loadCurrentSet
-    if File.exist? storeName
-      @currentSet = File.open(storeName, "rt") do |f|
+    if File.exist? currentSetStoreName
+      @currentSet = File.open(currentSetStoreName, "rt") do |f|
         JSON.parse(f.read)
       end
     end
+  end
+
+  def loadLastCard
+    result = nil
+    if File.exist? lastCardStoreName
+      result = File.open(lastCardStoreName, "rt") do |f|
+        Card.from_json(f.read)
+      end
+    end
+    return result
+  end
+
+  def createLastCard(setId, cardId, term, definition)
+    @lastCard = Card.new(setId, cardId, term, definition)
+  end
+
+  def storeLastCard()
+    File.open(lastCardStoreName, "w") {|f| f.write(JSON.dump(lastCard))}
+  end
+
+  def deleteLastCard
+    if File.exist? lastCardStoreName
+      File.delete(lastCardStoreName)
+    end
+  end
+
+  def hasLastCard?
+    return lastCard != nil
   end
   
 end
