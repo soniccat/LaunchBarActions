@@ -154,20 +154,22 @@ class QuizletCommand
   end
 
   def run
-    File.open("../../../outputQuizlet", "at") {|f| f.write(curlCommand())}
-    uri = URI(command)
+    File.open("../../../outputQuizlet", "at") {|f| f.write("\n");f.write(curlCommand())}
+    uri = URI(URI::encode(command))
 
     res = nil
     Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
       request = createRequest(uri)
       res = http.request request
 
-      if res.is_a?(Net::HTTPOK)
-      res = res.body
+      if res.code.to_i.between?(200,299)
+        res = res.body
       end
     end
 
     File.open("../../../outputQuizlet", "at") do |f|
+      f.write("\n");
+      
       if (res.is_a?(Net::HTTPResponse))
       f.write(res.code)
       f.write(res.body)
@@ -187,6 +189,8 @@ class QuizletCommand
       request = Net::HTTP::Post.new(uri)
     elsif method == "DELETE"
       request = Net::HTTP::Delete.new(uri)
+    elsif method == "PUT"
+      request = Net::HTTP::Put.new(uri)
     end
 
     request['Authorization:'] = 'Bearer ' + auth
